@@ -1,13 +1,11 @@
 ﻿using TimeYourselfBack.Models;
 
-namespace TimeYourselfBack.Service
-{
+namespace TimeYourselfBack.Service;
     public class VisualizerManagementService : IVisualizerManagementService
+{
+    public UserDto ValidateUser(UserDto userInput)
     {
-        public UserDto ValidateUser(UserDto userInput)
-        {
-            // Validate in db:
-            return userInput;
-        }
+        // Validate in db:
+        return userInput;
     }
 }

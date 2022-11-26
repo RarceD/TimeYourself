@@ -14,6 +14,7 @@ import { deepOrange } from '@mui/material/colors';
 import { URL_REQUEST } from '../util/util';
 import { useEffect, useState } from 'react';
 import image_logo from './../images/time.png';
+import { TopNavBar } from '../components/TopNavBar';
 
 export const Manage = () => {
   const [user, setUser] = useState("");
@@ -21,7 +22,7 @@ export const Manage = () => {
   const [errorSubmit, setErrorSubmit] = useState(false);
   const navigate = useNavigate();
   const [autologin, setAutologin] = useState(false);
-  const handleChangeAutologin = (e: any) =>  autologin ? setAutologin(false) : setAutologin(true);
+  const handleChangeAutologin = (e: any) => autologin ? setAutologin(false) : setAutologin(true);
 
   useEffect(() => {
     // Implementado autologin:
@@ -63,62 +64,23 @@ export const Manage = () => {
 
   return (
     <>
-        <Container component="main" maxWidth="xs">
-          <CssBaseline />
-          <Box
-            sx={{
-              marginTop: "50%",
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-            }}
-          >
-            <Avatar sx={{ m: 2, width: 104, height: 104 }}
-           variant="rounded" 
-             src={image_logo}>
-              {/* <SportsBaseballIcon /> */}
-            </Avatar>
-            <Typography component="h1" variant="h4">
-              Time Yourself
-            </Typography>
-            <Typography component="h6" variant="h6">
-              Remember living is just time
-            </Typography>
-            <Box component="form" sx={{ mt: 1 }}>
-              <Button
-                type="submit"
-                fullWidth
-                variant="contained"
-                onClick={() => navigate('/mainPage')}
-                color="error"
-                sx={{ mt: 1, mb: 1 }}
-              >
-                Visualize
-              </Button>
+      <TopNavBar pageName={'Manage Time'} />
+      <Container component="main" maxWidth="xs">
+        <CssBaseline />
+        <Box
+          sx={{
+            marginTop: "50%",
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+          }}
+        >
+          <Typography component="h6" variant="h6">
+            Remember living is just time
+          </Typography>
 
-              <Button
-                type="submit"
-                fullWidth
-                variant="contained"
-                onClick={handleSubmit}
-                color="info"
-                sx={{ mt: 1, mb: 1 }}
-              >
-                Manage time
-              </Button>
-                            <Button
-                type="submit"
-                fullWidth
-                variant="contained"
-                onClick={handleSubmit}
-                color="inherit"
-                sx={{ mt: 1, mb: 1 }}
-              >
-                Configuration
-              </Button>
-            </Box>
-          </Box>
-        </Container>
+        </Box>
+      </Container>
     </>
   )
 }

@@ -14,6 +14,7 @@ import { deepOrange } from '@mui/material/colors';
 import { URL_REQUEST } from '../util/util';
 import { useEffect, useState } from 'react';
 import image_logo from './../images/time.png';
+import { TopNavBar } from '../components/TopNavBar';
 
 export const Visualize = () => {
   const [user, setUser] = useState("");
@@ -63,6 +64,7 @@ export const Visualize = () => {
 
   return (
     <>
+        <TopNavBar pageName={'Visualize'} />
         <Container component="main" maxWidth="xs">
           <CssBaseline />
           <Box
@@ -73,11 +75,6 @@ export const Visualize = () => {
               alignItems: 'center',
             }}
           >
-            <Avatar sx={{ m: 2, width: 104, height: 104 }}
-           variant="rounded" 
-             src={image_logo}>
-              {/* <SportsBaseballIcon /> */}
-            </Avatar>
             <Typography component="h1" variant="h4">
               Time Yourself
             </Typography>
@@ -85,37 +82,6 @@ export const Visualize = () => {
               Remember living is just time
             </Typography>
             <Box component="form" sx={{ mt: 1 }}>
-              <Button
-                type="submit"
-                fullWidth
-                variant="contained"
-                onClick={() => navigate('/mainPage')}
-                color="error"
-                sx={{ mt: 1, mb: 1 }}
-              >
-                Visualize
-              </Button>
-
-              <Button
-                type="submit"
-                fullWidth
-                variant="contained"
-                onClick={handleSubmit}
-                color="info"
-                sx={{ mt: 1, mb: 1 }}
-              >
-                Manage time
-              </Button>
-                            <Button
-                type="submit"
-                fullWidth
-                variant="contained"
-                onClick={handleSubmit}
-                color="inherit"
-                sx={{ mt: 1, mb: 1 }}
-              >
-                Configuration
-              </Button>
             </Box>
           </Box>
         </Container>

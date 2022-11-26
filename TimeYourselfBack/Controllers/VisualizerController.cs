@@ -1,28 +1,22 @@
 using Microsoft.AspNetCore.Mvc;
 using TimeYourselfBack.Models;
 
-namespace TimeYourselfBack.Controllers
+namespace TimeYourselfBack.Controllers;
+
+[ApiController]
+[Route("[controller]")]
+public class VisualizerController : ControllerBase
 {
-    [ApiController]
-    [Route("[controller]")]
-    public class VisualizerController : ControllerBase
+    private readonly ILogger<VisualizerController> _logger;
+
+    public VisualizerController(ILogger<VisualizerController> logger)
     {
-        private static readonly string[] Summaries = new[]
-        {
-        "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-    };
+        _logger = logger;
+    }
 
-        private readonly ILogger<VisualizerController> _logger;
-
-        public VisualizerController(ILogger<VisualizerController> logger)
-        {
-            _logger = logger;
-        }
-
-        [HttpGet(Name = "GetWeerForeast")]
-        public IEnumerable<int> Get()
-        {
-            return new List<int>();
-        }
+    [HttpGet(Name = "GetWeerForeast")]
+    public IEnumerable<int> Get()
+    {
+        return new List<int>();
     }
 }

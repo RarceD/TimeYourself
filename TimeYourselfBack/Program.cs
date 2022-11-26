@@ -1,4 +1,8 @@
 
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using TimeYourselfBack.Repositories;
 using TimeYourselfBack.Service;
 
 namespace TimeYourselfBack
@@ -10,8 +14,16 @@ namespace TimeYourselfBack
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
+            var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+            builder.Services.AddDbContext<ApplicationDbContext>(options =>
+            {
+                options.UseSqlite(connectionString);
+            });
 
-
+            builder.Services.AddCors(opciones =>
+            {
+                opciones.AddPolicy("PermitirTodo", acceso => acceso.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin());
+            });
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
@@ -29,13 +41,10 @@ namespace TimeYourselfBack
                 app.UseSwaggerUI();
             }
 
-            app.UseHttpsRedirection();
-
-            app.UseAuthorization();
-
-
+            // app.UseHttpsRedirection();
+            app.UseCors("PermitirTodo");
             app.MapControllers();
-
+            app.UseAuthorization();
             app.Run();
         }
     }
