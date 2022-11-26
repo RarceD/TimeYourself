@@ -1,0 +1,7 @@
+{
+    "name": "TimeYourself",
+    "integrations": {
+        "capacitor": {}
+    },
+    "type": "react"
+}
