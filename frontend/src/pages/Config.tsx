@@ -1,21 +1,15 @@
-import Avatar from '@mui/material/Avatar';
-import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
-import TextField from '@mui/material/TextField';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
-import Link from '@mui/material/Link';
-import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { useNavigate } from 'react-router';
-import { deepOrange } from '@mui/material/colors';
 import { URL_REQUEST } from '../util/util';
 import { useEffect, useState } from 'react';
-import image_logo from './../images/time.png';
+import { TopNavBar } from '../components/TopNavBar';
 
-export const Login = () => {
+
+
+export const Config = () => {
   const [user, setUser] = useState("");
   const [pass, setPass] = useState("");
   const [errorSubmit, setErrorSubmit] = useState(false);
@@ -54,7 +48,7 @@ export const Login = () => {
             localStorage.setItem("autologin", "1");
           else
             localStorage.setItem("autologin", "0");
-          navigate('/mainPage');
+          ;
         }
         else
           setErrorSubmit(true);
@@ -63,6 +57,7 @@ export const Login = () => {
 
   return (
     <>
+        <TopNavBar pageName={'Configuration'} />
         <Container component="main" maxWidth="xs">
           <CssBaseline />
           <Box
@@ -73,47 +68,16 @@ export const Login = () => {
               alignItems: 'center',
             }}
           >
-            <Avatar sx={{ m: 2, bgcolor: deepOrange[600], width: 104, height: 104 }}
-           variant="rounded" 
-             src={image_logo}>
-              {/* <SportsBaseballIcon /> */}
-            </Avatar>
-            <Typography component="h1" variant="h4">
-              Time Yourself
-            </Typography>
             <Typography component="h6" variant="h6">
               Remember living is just time
             </Typography>
             <Box component="form" sx={{ mt: 1 }}>
-              {/* <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}> */}
-              <TextField
-                margin="normal"
-                fullWidth
-                error={errorSubmit}
-                label="Credentials"
-                name="email"
-                autoFocus
-                onChange={(e: any) => { setUser(e.target.value); }}
-              />
-              <FormControlLabel
-                control={<Checkbox value={autologin} color="primary" />}
-                label="Remember me"
-                onChange={handleChangeAutologin}
-              />
-              <Button
-                // type="submit"
-                fullWidth
-                variant="contained"
-                onClick={handleSubmit}
-                sx={{ mt: 3, mb: 2 }}
-              >
-                Enter
-              </Button>
             </Box>
           </Box>
         </Container>
-      {/* </ThemeProvider> */}
+
+
     </>
   )
 }
-export default Login;
+export default Config;

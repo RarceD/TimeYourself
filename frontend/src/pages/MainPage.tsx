@@ -15,7 +15,7 @@ import { URL_REQUEST } from '../util/util';
 import { useEffect, useState } from 'react';
 import image_logo from './../images/time.png';
 
-export const Login = () => {
+export const MainPage = () => {
   const [user, setUser] = useState("");
   const [pass, setPass] = useState("");
   const [errorSubmit, setErrorSubmit] = useState(false);
@@ -54,7 +54,7 @@ export const Login = () => {
             localStorage.setItem("autologin", "1");
           else
             localStorage.setItem("autologin", "0");
-          navigate('/mainPage');
+          ;
         }
         else
           setErrorSubmit(true);
@@ -73,7 +73,7 @@ export const Login = () => {
               alignItems: 'center',
             }}
           >
-            <Avatar sx={{ m: 2, bgcolor: deepOrange[600], width: 104, height: 104 }}
+            <Avatar sx={{ m: 2, width: 104, height: 104 }}
            variant="rounded" 
              src={image_logo}>
               {/* <SportsBaseballIcon /> */}
@@ -85,35 +85,41 @@ export const Login = () => {
               Remember living is just time
             </Typography>
             <Box component="form" sx={{ mt: 1 }}>
-              {/* <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}> */}
-              <TextField
-                margin="normal"
-                fullWidth
-                error={errorSubmit}
-                label="Credentials"
-                name="email"
-                autoFocus
-                onChange={(e: any) => { setUser(e.target.value); }}
-              />
-              <FormControlLabel
-                control={<Checkbox value={autologin} color="primary" />}
-                label="Remember me"
-                onChange={handleChangeAutologin}
-              />
               <Button
-                // type="submit"
+                type="submit"
+                fullWidth
+                variant="contained"
+                onClick={() => navigate('/mainPage')}
+                color="error"
+                sx={{ mt: 1, mb: 1 }}
+              >
+                Visualize
+              </Button>
+
+              <Button
+                type="submit"
                 fullWidth
                 variant="contained"
                 onClick={handleSubmit}
-                sx={{ mt: 3, mb: 2 }}
+                color="info"
+                sx={{ mt: 1, mb: 1 }}
               >
-                Enter
+                Manage time
+              </Button>
+                            <Button
+                type="submit"
+                fullWidth
+                variant="contained"
+                onClick={handleSubmit}
+                color="inherit"
+                sx={{ mt: 1, mb: 1 }}
+              >
+                Configuration
               </Button>
             </Box>
           </Box>
         </Container>
-      {/* </ThemeProvider> */}
     </>
   )
 }
-export default Login;
+export default MainPage;

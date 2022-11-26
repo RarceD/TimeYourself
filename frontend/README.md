@@ -1,12 +1,11 @@
-# PAPDEL 
+# The plan:
 
-- [] Allow diferent users.
-- [] Get diferent courts according id.
-- [] Enable book
+- [] 3 main pages for view, config and update calendars.
+- [] Comunication with backend.
 
-## Endpoings
-Endpoint | params | response 
-:---: | :---: | :---: 
-/login | user, pass | id, token 
-/courts | id, token | courts(class) 
-/book | id, token, court_id | ok(class) 
+## Rols for deploy:
+
+npm run build
+npm i @capacitor/ios @capacitor/android
+npx cap add android
+npx cap open android
