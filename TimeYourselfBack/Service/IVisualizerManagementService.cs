@@ -4,6 +4,6 @@ namespace TimeYourselfBack.Service
 {
     public interface IVisualizerManagementService
     {
-        UserDto ValidateUser(UserDto userInput);
+        bool AddVisualizerRegister(int userId, int configId);
     }
 }

@@ -1,5 +1,7 @@
-﻿using TimeYourselfBack.Models;
+﻿using Microsoft.EntityFrameworkCore;
+using TimeYourselfBack.Models;
 using TimeYourselfBack.Repositories;
+using TimeYourselfBack.Repositories.Models;
 
 namespace TimeYourselfBack.Service;
 public class UserManagementService : IUserManagementService
@@ -14,8 +16,9 @@ public class UserManagementService : IUserManagementService
     public UserDto ValidateUser(UserDto userInput)
     {
         // Validate in db:
-        var client = _dbContext.Clients.Where(c => c.User == userInput.UserNumber).FirstOrDefault();
-        userInput.Token = client.Token;
+        Clients? client = _dbContext.Clients.Where(i=>i.Name == userInput.UserNumber).FirstOrDefault();
+        userInput.Token = client != null ? client.Token : "";
+        userInput.Id = client != null ? client.Id : 0;
         return userInput;
     }
 }

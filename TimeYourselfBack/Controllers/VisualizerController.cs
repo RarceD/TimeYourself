@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using TimeYourselfBack.Models;
+using TimeYourselfBack.Service;
 
 namespace TimeYourselfBack.Controllers;
 
@@ -8,15 +9,30 @@ namespace TimeYourselfBack.Controllers;
 public class VisualizerController : ControllerBase
 {
     private readonly ILogger<VisualizerController> _logger;
+    private readonly IVisualizerManagementService _visualizerManagementService;
 
-    public VisualizerController(ILogger<VisualizerController> logger)
+    public VisualizerController(ILogger<VisualizerController> logger,
+        IVisualizerManagementService visualizerManagementService)
     {
         _logger = logger;
+        _visualizerManagementService = visualizerManagementService;
     }
 
-    [HttpGet(Name = "GetWeerForeast")]
-    public IEnumerable<int> Get()
+    #region GET
+    [HttpGet]
+    public List<VisualizerDto> GetConfigByUser(int userId)
     {
-        return new List<int>();
+        return null; // _visualizerManagementService.GetCalendars(userId);
     }
+    #endregion
+
+    #region POST
+
+    [HttpPost]
+    public ActionResult AddVisualizerRegister(VisualizerDto newVisualizer)
+    {
+        bool success = _visualizerManagementService.AddVisualizerRegister(newVisualizer.UserId, newVisualizer.ConfigId);
+        return success ? Ok() : NoContent();
+    }
+    #endregion
 }

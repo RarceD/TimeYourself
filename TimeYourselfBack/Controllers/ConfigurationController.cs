@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using TimeYourselfBack.Models;
+using TimeYourselfBack.Service;
 
 namespace TimeYourselfBack.Controllers;
 
@@ -8,15 +9,31 @@ namespace TimeYourselfBack.Controllers;
 public class ConfigurationController : ControllerBase
 {
     private readonly ILogger<ConfigurationController> _logger;
+    private readonly IConfigurationManagementService _configurationManagementService;
 
-    public ConfigurationController(ILogger<ConfigurationController> logger)
+    public ConfigurationController(ILogger<ConfigurationController> logger,
+        IConfigurationManagementService configurationManagementService)
     {
         _logger = logger;
+        _configurationManagementService = configurationManagementService;
     }
 
-    [HttpGet(Name = "GetWeatherForecast")]
-    public IEnumerable<int> Get()
+    #region GET
+    [HttpGet]
+    public List<ConfigDto> GetConfigByUser(int userId)
     {
-        return new List<int>();
+        return _configurationManagementService.GetConfigurationByUserId(userId);
     }
+    #endregion
+
+    #region POST
+
+    [HttpPost]
+    public ActionResult AddConfiguration(ConfigDto newConfig)
+    {
+        bool success = _configurationManagementService.AddOrUpdateConfiguration(newConfig);
+        return success ? Ok() : NoContent();
+    }
+    #endregion
+
 }

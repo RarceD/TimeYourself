@@ -1,5 +1,6 @@
 ﻿using TimeYourselfBack.Models;
 using TimeYourselfBack.Repositories;
+using TimeYourselfBack.Repositories.Models;
 
 namespace TimeYourselfBack.Service;
 public class ConfigurationManagementService : IConfigurationManagementService
@@ -11,10 +12,34 @@ public class ConfigurationManagementService : IConfigurationManagementService
     {
         _context = context;
     }
-
-    public UserDto ValidateUser(UserDto userInput)
+    public bool AddOrUpdateConfiguration(ConfigDto newConfig)
     {
-        // Validate in db:
-        return userInput;
+        try
+        {
+            Config config = new();
+            config.UserId = newConfig.UserId;
+            config.Name = newConfig.Name;
+            _context.Add(config);
+            _context.SaveChanges();
+            return true;
+        }
+        catch (Exception ex)
+        {
+            return true;
+        }
+    }
+    public List<ConfigDto> GetConfigurationByUserId(int userId)
+    {
+        var allConfigByUser = _context.Config.Where(u =>u.UserId == userId).ToList();
+        if (allConfigByUser.Count > 0)
+        {
+            var data =  new List<ConfigDto>();
+            foreach (var c in allConfigByUser)
+                data.Add(new ConfigDto() { Id = c.Id, Name = c.Name , UserId = c.UserId});
+            return data;
+        }
+        else
+            return new List<ConfigDto>();
+
     }
 }

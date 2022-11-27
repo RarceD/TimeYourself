@@ -4,6 +4,7 @@ namespace TimeYourselfBack.Service
 {
     public interface IConfigurationManagementService
     {
-        UserDto ValidateUser(UserDto userInput);
+        bool AddOrUpdateConfiguration(ConfigDto newConfig);
+        List<ConfigDto> GetConfigurationByUserId(int userId);
     }
 }
