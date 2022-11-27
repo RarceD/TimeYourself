@@ -11,30 +11,31 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { useNavigate } from 'react-router';
 import { deepOrange } from '@mui/material/colors';
-import { URL_REQUEST } from '../util/util';
+import { GetUserDto, URL_REQUEST } from '../util/util';
 import { useEffect, useState } from 'react';
 import image_logo from './../images/time.png';
 import { GetFromServer, PostFromServer } from '../services/server';
 import { ServerAction } from '../interfaces/serverAction';
+import { UserDto } from '../interfaces/UserDto';
 
 export const Login = () => {
   const [user, setUser] = useState("");
-  const [pass, setPass] = useState("");
   const [errorSubmit, setErrorSubmit] = useState(false);
   const navigate = useNavigate();
-  const [autologin, setAutologin] = useState(false);
-  const handleChangeAutologin = (e: any) => autologin ? setAutologin(false) : setAutologin(true);
 
-  useEffect(() => {
-    // Implementado autologin:
-    let autoLogin: string | null = localStorage.getItem("autologin")
-    if (autoLogin != null)
-      navigate("courts")
-  }, [navigate]);
-
-  const onServerResponse = (json: string) => {
-    console.log(json);
-    // navigate('/mainPage');
+  const onServerResponse = (json: any) => {
+    let raw: UserDto = json;
+    if (raw.token === "") 
+    {
+        setErrorSubmit(true);
+        return;
+    }
+    // If OK:
+    localStorage.setItem("user", JSON.stringify(json));
+    let user: UserDto | null = GetUserDto();
+    if (user != null) {
+      navigate('/mainPage');
+    }
   }
 
   const handleSubmit = () => {
@@ -42,8 +43,7 @@ export const Login = () => {
       callbackFunction: onServerResponse,
       endpoint: 'user',
       data: {
-        "userNumber": "1234",
-        "token": "1234"
+        "userNumber": user
       }
     });
   }
@@ -60,7 +60,7 @@ export const Login = () => {
             alignItems: 'center',
           }}
         >
-          <Avatar sx={{ m: 2, bgcolor: deepOrange[600], width: 104, height: 104 }}
+          <Avatar sx={{ m: 2, width: 104, height: 104 }}
             variant="rounded"
             src={image_logo}>
             {/* <SportsBaseballIcon /> */}
@@ -83,9 +83,9 @@ export const Login = () => {
               onChange={(e: any) => { setUser(e.target.value); }}
             />
             <FormControlLabel
-              control={<Checkbox value={autologin} color="primary" />}
+              control={<Checkbox value={false} color="primary" />}
               label="Remember me"
-              onChange={handleChangeAutologin}
+            // onChange={handleChangeAutologin}
             />
             <Button
               // type="submit"

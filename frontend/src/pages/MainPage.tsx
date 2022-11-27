@@ -23,37 +23,6 @@ export const MainPage = () => {
       navigate("courts")
   }, [navigate]);
 
-  const handleSubmit = () => {
-    let data = { user: user, pass: "" }
-    const to_send = JSON.stringify(data)
-    const requestOptions = {
-      method: 'POST',
-      mode: "cors" as RequestMode,
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
-      },
-      body: to_send
-    };
-
-    fetch(URL_REQUEST + "login", requestOptions)
-      .then(response => response.json())
-      .catch(error => console.error('Error:', error))
-      .then(response => {
-        if (response["success"]) {
-          localStorage.setItem("id", response["id"]);
-          localStorage.setItem("token", response["token"]);
-          if (autologin)
-            localStorage.setItem("autologin", "1");
-          else
-            localStorage.setItem("autologin", "0");
-          ;
-        }
-        else
-          setErrorSubmit(true);
-      });
-  }
-
   return (
     <>
       <Container component="main" maxWidth="xs">
@@ -88,7 +57,6 @@ export const MainPage = () => {
             >
               Visualize
             </Button>
-
             <Button
               type="submit"
               fullWidth
