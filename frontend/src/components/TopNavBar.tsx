@@ -6,7 +6,6 @@ import Toolbar from '@mui/material/Toolbar';
 import IconButton from '@mui/material/IconButton';
 import LogoutIcon from '@mui/icons-material/Logout';
 
-import { createTheme } from '@mui/material/styles';
 import { useNavigate } from 'react-router';
 
 interface AppBarProps {
