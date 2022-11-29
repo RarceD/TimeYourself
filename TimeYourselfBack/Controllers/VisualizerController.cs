@@ -20,9 +20,9 @@ public class VisualizerController : ControllerBase
 
     #region GET
     [HttpGet]
-    public List<VisualizerDto> GetConfigByUser(int userId)
+    public List<VisualizerDto> GetAll(VisualizerDto newVisualizer)
     {
-        return null; // _visualizerManagementService.GetCalendars(userId);
+        return _visualizerManagementService.GetCalerdar(newVisualizer);
     }
     #endregion
 
