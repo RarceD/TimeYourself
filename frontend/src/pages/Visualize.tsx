@@ -6,38 +6,37 @@ import { TopNavBar } from '../components/TopNavBar';
 import { Button, ButtonGroup, Grid } from '@mui/material';
 import { useState, useEffect } from 'react';
 import { VisualizerDayDto, VisualizerDto, VisualizerMonthDto } from '../interfaces/VisualizerDto';
+import { GetFromServer } from '../services/server';
 
 
 
 export const Visualize = () => {
   let [userVisualizerDataMonths, setUserVisualizerDataMonths] = useState<VisualizerDto>({ months: [] });
 
-  useEffect(() => {
-    let visualize: VisualizerDto = { months: [] };
-
-    // Add days to months:
-    for (let x = 0; x < 5; x++) {
-      let month: VisualizerMonthDto = { days: [] };
-      for (let i = 0; i < 30; i++) {
-        let j: VisualizerDayDto = {
-          id: i,
-          person: i % 2 === 0 ? "test" : ""
-        }
-        month.days.push(j);
-      }
-      visualize.months.push(month);
-    }
+  const onServerResponse = (json: any) => {
+    let visualize: VisualizerDto = json;
     setUserVisualizerDataMonths(visualize);
+  }
 
-    /*
-    for (let i = 0; i < 30; i++) {
-    }
-    setUserVisualizerData(total);
-    let months: VisualizerDto = {months: []};
-    months.push(total)
-
-    */
+  useEffect(() => {
+    GetFromServer({
+      callbackFunction: onServerResponse,
+      endpoint: 'visualizer/test?userId=1&configId=1',
+    });
   }, []);
+
+  const renderMonths = () => {
+    return userVisualizerDataMonths.months.map((month: VisualizerMonthDto) => {
+      return (
+        <>
+          <div>
+            {month.id}
+          </div>
+        </>
+      )
+    })
+  }
+
 
   return (
     <>
@@ -55,6 +54,7 @@ export const Visualize = () => {
           <Typography component="h6" variant="h6">
             January:
           </Typography>
+          {renderMonths()}
 
 
         </Box>

@@ -24,6 +24,14 @@ public class VisualizerController : ControllerBase
     {
         return _visualizerManagementService.GetCalerdar(newVisualizer);
     }
+
+    [HttpGet]
+    [Route("test")]
+    public VisualizerLayoutDto GetAllw(int userId, int configId)
+    {
+        VisualizerDto newVisualizer = new() { ConfigId = configId, UserId = userId};
+        return _visualizerManagementService.GetCalerdarTest(newVisualizer);
+    }
     #endregion
 
     #region POST
