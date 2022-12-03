@@ -7,13 +7,14 @@ import { Button, ButtonGroup, Grid } from '@mui/material';
 import { useState, useEffect } from 'react';
 import { VisualizerDayDto, VisualizerDto, VisualizerMonthDto } from '../interfaces/VisualizerDto';
 import { GetFromServer } from '../services/server';
-
+import { MonthCalendar } from '../components/MonthCalendar';
 
 
 export const Visualize = () => {
   let [userVisualizerDataMonths, setUserVisualizerDataMonths] = useState<VisualizerDto>({ months: [] });
 
   const onServerResponse = (json: any) => {
+    console.log(json)
     let visualize: VisualizerDto = json;
     setUserVisualizerDataMonths(visualize);
   }
@@ -21,22 +22,9 @@ export const Visualize = () => {
   useEffect(() => {
     GetFromServer({
       callbackFunction: onServerResponse,
-      endpoint: 'visualizer/test?userId=1&configId=1',
+      endpoint: 'visualizer/all',
     });
   }, []);
-
-  const renderMonths = () => {
-    return userVisualizerDataMonths.months.map((month: VisualizerMonthDto) => {
-      return (
-        <>
-          <div>
-            {month.id}
-          </div>
-        </>
-      )
-    })
-  }
-
 
   return (
     <>
@@ -45,35 +33,17 @@ export const Visualize = () => {
         <CssBaseline />
         <Box
           sx={{
-            marginTop: "50%",
+            // marginTop: "50%",
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
           }}
         >
-          <Typography component="h6" variant="h6">
-            January:
-          </Typography>
-          {renderMonths()}
-
-
         </Box>
+       <MonthCalendar data={userVisualizerDataMonths} /> 
       </Container>
     </>
   )
 }
 
-/*
-          <Grid container
-            spacing={{ xs: 0 }}
-            columns={{ xs: 11 }}>
-            {userVisualizerDataMonths.months.map((data: VisualizerDto) => <Grid item xs={2} >
-              <Button
-                variant={data.person !== "" ? "outlined" : "contained"}
-                size="small" >
-              </Button>
-            </Grid>
-            )}
-          </Grid>
-*/
 export default Visualize;
