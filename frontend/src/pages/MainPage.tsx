@@ -5,16 +5,11 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { useNavigate } from 'react-router';
-import { URL_REQUEST } from '../util/util';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import image_logo from './../images/time.png';
 
 export const MainPage = () => {
-  const [user, setUser] = useState("");
-  const [pass, setPass] = useState("");
-  const [errorSubmit, setErrorSubmit] = useState(false);
   const navigate = useNavigate();
-  const [autologin, setAutologin] = useState(false);
 
   useEffect(() => {
     // Implementado autologin:

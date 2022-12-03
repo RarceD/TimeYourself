@@ -4,22 +4,20 @@ import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
-import Link from '@mui/material/Link';
-import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { useNavigate } from 'react-router';
-import { deepOrange } from '@mui/material/colors';
-import { GetUserDto, URL_REQUEST } from '../util/util';
+import { GetUserDto } from '../util/util';
 import { useEffect, useState } from 'react';
 import image_logo from './../images/time.png';
-import { GetFromServer, PostFromServer } from '../services/server';
-import { ServerAction } from '../interfaces/serverAction';
+import { PostFromServer } from '../services/server';
 import { UserDto } from '../interfaces/UserDto';
+import 'animate.css';
 
 export const Login = () => {
   const [user, setUser] = useState("");
+  const [refresh, setRefresh] = useState(true);
   const [errorSubmit, setErrorSubmit] = useState(false);
   const navigate = useNavigate();
 
@@ -48,6 +46,8 @@ export const Login = () => {
     });
   }
 
+  useEffect(()=>{
+  });
   return (
     <>
       <Container component="main" maxWidth="xs">
@@ -65,7 +65,9 @@ export const Login = () => {
             src={image_logo}>
             {/* <SportsBaseballIcon /> */}
           </Avatar>
-          <Typography component="h1" variant="h4">
+          <Typography component="h1" variant="h4" 
+            className='animate__animated animate__bounceIn animate__slow animate__delay-2s '
+          >
             Time Yourself
           </Typography>
           <Typography component="h6" variant="h6">

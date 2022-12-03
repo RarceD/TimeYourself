@@ -1,66 +1,51 @@
-import Avatar from '@mui/material/Avatar';
-import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
-import TextField from '@mui/material/TextField';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
-import Link from '@mui/material/Link';
-import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { useNavigate } from 'react-router';
-import { deepOrange } from '@mui/material/colors';
-import { URL_REQUEST } from '../util/util';
 import { useEffect, useState } from 'react';
-import image_logo from './../images/time.png';
 import { TopNavBar } from '../components/TopNavBar';
+import { Alert, Button, Grid, InputLabel, MenuItem, Select, SelectChangeEvent, Stack, TextField } from '@mui/material';
+import { ConfigDto } from '../interfaces/ConfigDto';
+import { GetFromServer } from '../services/server';
+import { MobileDatePicker } from '@mui/x-date-pickers'
+import { LocalizationProvider } from '@mui/x-date-pickers'
+import dayjs, { Dayjs } from 'dayjs';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 
 export const Manage = () => {
-  const [user, setUser] = useState("");
-  const [pass, setPass] = useState("");
-  const [errorSubmit, setErrorSubmit] = useState(false);
-  const navigate = useNavigate();
-  const [autologin, setAutologin] = useState(false);
-  const handleChangeAutologin = (e: any) => autologin ? setAutologin(false) : setAutologin(true);
+  const [meetPerson, setMeetPerson] = useState("");
+  const [person, setPerson] = useState('');
+  const [peopleToMeetWith, setPeopleToMeetWith] = useState<ConfigDto[]>([]);
+  const [value, setValue] = useState<Dayjs | null>(
+    dayjs('2022-12-18T21:11:54'),
+  );
+
+  const handleChangee = (newValue: Dayjs | null) => {
+    setValue(newValue);
+  };
+
+
+  const handleChange = (event: SelectChangeEvent) => {
+    setPerson(event.target.value as string);
+  };
 
   useEffect(() => {
-    // Implementado autologin:
-    let autoLogin: string | null = localStorage.getItem("autologin")
-    if (autoLogin != null)
-      navigate("courts")
-  }, [navigate]);
+  }, []);
 
-  const handleSubmit = () => {
-    let data = { user: user, pass: "" }
-    const to_send = JSON.stringify(data)
-    const requestOptions = {
-      method: 'POST',
-      mode: "cors" as RequestMode,
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
-      },
-      body: to_send
-    };
+  const onServerResponse = (json: any) => {
+    let configUsers: ConfigDto[] = json;
+    setPeopleToMeetWith(configUsers);
 
-    fetch(URL_REQUEST + "login", requestOptions)
-      .then(response => response.json())
-      .catch(error => console.error('Error:', error))
-      .then(response => {
-        if (response["success"]) {
-          localStorage.setItem("id", response["id"]);
-          localStorage.setItem("token", response["token"]);
-          if (autologin)
-            localStorage.setItem("autologin", "1");
-          else
-            localStorage.setItem("autologin", "0");
-          ;
-        }
-        else
-          setErrorSubmit(true);
-      });
+    setMeetPerson("Rubén");
+    setPerson('hola');
   }
+  useEffect(() => {
+    GetFromServer({
+      callbackFunction: onServerResponse,
+      endpoint: 'configuration'
+    });
+  }, []);
 
   return (
     <>
@@ -69,18 +54,67 @@ export const Manage = () => {
         <CssBaseline />
         <Box
           sx={{
-            marginTop: "50%",
+            marginTop: "10%",
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
+            marginBottom: '20%'
           }}
         >
-          <Typography component="h6" variant="h6">
-            Remember living is just time
+          <Typography component="h6" variant="h6" marginBottom={'20px'}>
+            Select the person you have meet today:
           </Typography>
-
+          <Select
+            value={person}
+            label="Age"
+            onChange={handleChange}
+          >
+            {peopleToMeetWith.map((p) => <MenuItem key={p.id} value={p.name}>{p.name}</MenuItem>)}
+          </Select>
+            <LocalizationProvider dateAdapter={AdapterDayjs}>
+              <Stack spacing={3}>
+                <MobileDatePicker
+                  label="Date mobile"
+                  inputFormat="MM/DD/YYYY"
+                  value={value}
+                  onChange={handleChangee}
+                  renderInput={(params: any) => <TextField {...params} />}
+                />
+              </Stack>
+            </LocalizationProvider>
         </Box>
+
+        <Grid container direction="row" justifyContent="center" alignItems="center" marginBottom="40px"
+          marginTop="20px"
+          spacing={2}>
+          <Grid item>
+            <Button
+              variant="contained"
+              //onClick={() => onClose("")}
+              color="error"
+              size="large"
+            >
+              Exit
+            </Button>
+
+          </Grid>
+          <Grid item >
+            <Button
+              variant="outlined"
+              //onClick={handleClose}
+              size="large"
+            >
+              Delete user
+            </Button>
+          </Grid>
+
+          <Grid item >
+          </Grid>
+        </Grid>
+        <Alert severity="success">You have add meet with {meetPerson}</Alert>
+        <Alert severity="error">You have add meet with {meetPerson}</Alert>
       </Container>
+
     </>
   )
 }
