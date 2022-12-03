@@ -12,10 +12,7 @@ interface AppBarProps {
     pageName: string;
 }
 export const TopNavBar = (props: AppBarProps) => {
-
-      const navigate = useNavigate();
-      
-
+    const navigate = useNavigate();
     return (
         <Box sx={{ flexGrow: 1 }}>
             <AppBar position="static">

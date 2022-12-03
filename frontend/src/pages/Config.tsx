@@ -15,7 +15,9 @@ export const Config = () => {
   const [peopleList, setPeopleList] = useState<ConfigDto[]>([]);
   const [refresh, setRefresh] = useState(false);
   const [open, setOpen] = useState(false);
+
   const onServerResponse = (json: any) => {
+    if (json === undefined) return;
     let configUsers: ConfigDto[] = json;
     setPeopleList(configUsers);
   }
@@ -69,7 +71,12 @@ export const Config = () => {
           alignItems: 'center',
         }}
       >
-        <ConfigListPeople peopleList={peopleList} />
+        {
+          peopleList.length !== 0 ?
+            <ConfigListPeople peopleList={peopleList} />
+            :
+            <> No friends enable</>
+        }
       </Box>
 
       <ConfigDialog
