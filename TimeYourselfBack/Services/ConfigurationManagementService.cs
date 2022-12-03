@@ -28,6 +28,22 @@ public class ConfigurationManagementService : IConfigurationManagementService
             return true;
         }
     }
+
+    public bool RemoveConfiguration(ConfigDto config)
+    {
+        try
+        {
+            var configToDelete = _context.Config.Where(i => i.UserId == config.UserId && i.Name == config.Name).FirstOrDefault();
+            _ = _context.Remove(configToDelete);
+            _context.SaveChanges();
+            return true;
+        }
+        catch (Exception ex)
+        {
+            return true;
+        }
+    }
+
     public List<ConfigDto> GetConfigurationByUserId(int userId)
     {
         var allConfigByUser = _context.Config.Where(u =>u.UserId == userId).ToList();

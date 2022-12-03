@@ -6,5 +6,6 @@ namespace TimeYourselfBack.Service
     {
         bool AddVisualizerRegister(int userId, int configId);
         List<VisualizerDto> GetCalerdar(VisualizerDto dto);
+        VisualizerLayoutDto GetCalerdarTest(int userId, int? configId);
     }
 }

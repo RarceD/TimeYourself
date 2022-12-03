@@ -1,12 +1,14 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using TimeYourselfBack.Models;
 using TimeYourselfBack.Service;
 
 namespace TimeYourselfBack.Controllers;
 
+[Authorize]
 [ApiController]
 [Route("[controller]")]
-public class VisualizerController : ControllerBase
+public class VisualizerController : BaseController
 {
     private readonly ILogger<VisualizerController> _logger;
     private readonly IVisualizerManagementService _visualizerManagementService;
@@ -19,19 +21,29 @@ public class VisualizerController : ControllerBase
     }
 
     #region GET
+
+    /// <summary>
+    /// Get all the visualizer data for specifig configuration user
+    /// </summary>
+    /// <param name="configId"></param>
+    /// <returns></returns>
     [HttpGet]
-    public List<VisualizerDto> GetAll(VisualizerDto newVisualizer)
+    public VisualizerLayoutDto GetVisualizerDataSpecifig(int configId)
     {
-        return _visualizerManagementService.GetCalerdar(newVisualizer);
+        return _visualizerManagementService.GetCalerdarTest(GetUserIdFromJWT(), configId);
     }
 
+    /// <summary>
+    /// Get all visualizer data for all configs
+    /// </summary>
+    /// <returns></returns>
     [HttpGet]
-    [Route("test")]
-    public VisualizerLayoutDto GetAllw(int userId, int configId)
+    [Route("all")]
+    public VisualizerLayoutDto GetVisualizerData()
     {
-        VisualizerDto newVisualizer = new() { ConfigId = configId, UserId = userId};
-        return _visualizerManagementService.GetCalerdarTest(newVisualizer);
+        return _visualizerManagementService.GetCalerdarTest(GetUserIdFromJWT(), null);
     }
+
     #endregion
 
     #region POST
@@ -39,8 +51,8 @@ public class VisualizerController : ControllerBase
     [HttpPost]
     public ActionResult AddVisualizerRegister(VisualizerDto newVisualizer)
     {
-        bool success = _visualizerManagementService.AddVisualizerRegister(newVisualizer.UserId, newVisualizer.ConfigId);
-        return success ? Ok() : NoContent();
+        //bool success = _visualizerManagementService.AddVisualizerRegister(newVisualizer.UserId, newVisualizer.ConfigId);
+        return true ? Ok() : NoContent();
     }
     #endregion
 }
