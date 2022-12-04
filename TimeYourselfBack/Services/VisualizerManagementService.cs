@@ -80,9 +80,6 @@ public class VisualizerManagementService : IVisualizerManagementService
             v.Id = dto.Id;
             v.UserId = dto.UserId;
             v.ConfigId = dto.ConfigId;
-            v.Year = dto.Year;
-            v.Month = dto.Month;
-            v.Day = dto.Day;
             visualizerDtos.Add(v);
         }
         return visualizerDtos;
@@ -94,9 +91,6 @@ public class VisualizerManagementService : IVisualizerManagementService
         newRegister.ConfigId = configId;
         newRegister.UserId = userId;
         var today = DateTime.Today;
-        newRegister.Day = today.Day;
-        newRegister.Month = today.Month;
-        newRegister.Year = today.Year;
         return newRegister;
     }
 }

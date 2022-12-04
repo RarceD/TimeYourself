@@ -1,4 +1,5 @@
-﻿using TimeYourselfBack.Models;
+﻿using Microsoft.JSInterop.Infrastructure;
+using TimeYourselfBack.Models;
 using TimeYourselfBack.Repositories;
 using TimeYourselfBack.Repositories.Models;
 
@@ -12,35 +13,60 @@ public class ManageManagementService : IManageManagementService
     {
         _context = context;
     }
-    public bool AddMetting(ManageDto newConfig, int userId)
+    public bool AddMetting(ManageDto dto, int userId)
     {
         try
         {
-            Config config = new();
-            config.UserId = newConfig.UserId;
-            config.Name = newConfig.Name;
-            _context.Add(config);
+            Visualizer newEntry = new();
+            newEntry.UserId = userId;
+            newEntry.ConfigId = dto.ConfigId;
+            if (dto.InsertDate == null)
+                newEntry.InsertDate = DateTime.Now.ToString();
+            else
+                newEntry.InsertDate = dto.InsertDate.ToString()!;
+            _context.Add(newEntry);
             _context.SaveChanges();
             return true;
         }
         catch (Exception ex)
         {
-            return true;
+            return false;
         }
     }
 
-    public bool RemoveMetting(ManageDto config, int userId)
+    public bool RemoveMetting(ManageDto dto, int userId)
     {
         try
         {
-            var configToDelete = _context.Config.Where(i => i.UserId == config.UserId && i.Name == config.Name).FirstOrDefault();
-            _ = _context.Remove(configToDelete);
-            _context.SaveChanges();
-            return true;
+            // TODO: Insert Data must be taken in consideration
+            IEnumerable<Visualizer> toRemove = _context.Visualizer.Where(x => x.UserId == userId && x.ConfigId == dto.ConfigId).ToList();
+            foreach (var v in toRemove)
+            {
+                if (CompareTime(v.InsertDate, dto.InsertDate))
+                {
+                    _context.Remove(v);
+                    _context.SaveChanges();
+                    return true;
+                }
+            }
+            return false;
         }
         catch (Exception ex)
         {
-            return true;
+            return false;
         }
+
+    }
+    private bool CompareTime(string strDate, DateTime? userDate)
+    {
+        DateTime dbDate = DateTime.Parse(strDate);
+        if (userDate != null)
+        {
+            DateTime userInfo = (DateTime)userDate;
+            return dbDate.Day == userInfo.Day
+                && dbDate.Month == userInfo.Month
+                && dbDate.Year == userInfo.Year;
+        }
+        return false;
     }
 }

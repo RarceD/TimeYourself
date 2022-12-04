@@ -5,9 +5,13 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using Serilog.Debugging;
+using Serilog;
 using System.Text;
 using TimeYourselfBack.Repositories;
 using TimeYourselfBack.Service;
+using Microsoft.Extensions.Configuration;
+using TimeYourselfBack.Controllers;
 
 namespace TimeYourselfBack
 {
@@ -35,6 +39,7 @@ namespace TimeYourselfBack
             builder.Services.AddScoped<IUserManagementService, UserManagementService>();
             builder.Services.AddScoped<IConfigurationManagementService, ConfigurationManagementService>();
             builder.Services.AddScoped<IVisualizerManagementService, VisualizerManagementService>();
+            builder.Services.AddScoped<IManageManagementService, ManageManagementService>();
             builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(options =>
                 {
@@ -48,6 +53,19 @@ namespace TimeYourselfBack
                 });
 
             var app = builder.Build();
+
+
+            var serilogLogger = new LoggerConfiguration()
+                .MinimumLevel.Verbose()
+                .WriteTo.File("log.txt", rollingInterval: RollingInterval.Day)
+                .CreateLogger();
+            //var loggerFactory = new LoggerFactory().AddSerilog(serilogLogger);
+            //builder.Services.AddSingleton<ILoggerFactory, LoggerFactory>();
+            //var logger = loggerFactory.CreateLogger<BaseController>();
+            //logger.LogInformation("asdf");
+
+
+
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
             {

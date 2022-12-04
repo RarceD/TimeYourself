@@ -2,8 +2,7 @@
 {
     public class ManageDto
     {
-        public int? Id { get; set; }
-        public int UserId { get; set; }
-        public string Name { get; set; }
+        public int ConfigId { get; set; }
+        public DateTime? InsertDate { get; set; }
     }
 }

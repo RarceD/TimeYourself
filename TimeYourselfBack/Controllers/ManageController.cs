@@ -30,7 +30,7 @@ public class ManageController : BaseController
     {
         var userId = GetUserIdFromJWT();
         bool success = _manageManagementService.AddMetting(manage, userId);
-        return success ? Ok() : NoContent();
+        return success ? Ok("ok") : NoContent();
     }
 
     [HttpPost]
@@ -39,7 +39,7 @@ public class ManageController : BaseController
     {
         var userId = GetUserIdFromJWT();
         bool success = _manageManagementService.RemoveMetting(manage, userId);
-        return success ? Ok() : NoContent();
+        return success ? Ok("ok") : NoContent();
     }
     #endregion
 
