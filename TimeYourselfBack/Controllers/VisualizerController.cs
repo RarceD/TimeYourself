@@ -28,9 +28,9 @@ public class VisualizerController : BaseController
     /// <param name="configId"></param>
     /// <returns></returns>
     [HttpGet]
-    public VisualizerLayoutDto GetVisualizerDataSpecifig(int configId)
+    public IEnumerable<VisualizerLayoutDto> GetVisualizerDataSpecifig(int configId, int year)
     {
-        return _visualizerManagementService.GetCalerdarTest(GetUserIdFromJWT(), configId);
+        return _visualizerManagementService.GetCalerdar(GetUserIdFromJWT(), configId, year);
     }
 
     /// <summary>
@@ -39,9 +39,9 @@ public class VisualizerController : BaseController
     /// <returns></returns>
     [HttpGet]
     [Route("all")]
-    public VisualizerLayoutDto GetVisualizerData()
+    public IEnumerable<VisualizerLayoutDto> GetVisualizerData(int year)
     {
-        return _visualizerManagementService.GetCalerdarTest(GetUserIdFromJWT(), null);
+        return _visualizerManagementService.GetCalerdar(GetUserIdFromJWT(), null, year);
     }
 
     #endregion
