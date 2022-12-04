@@ -6,7 +6,6 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { useNavigate } from 'react-router';
 import { useEffect } from 'react';
-import image_logo from './../images/time.png';
 
 export const MainPage = () => {
   const navigate = useNavigate();
@@ -32,7 +31,7 @@ export const MainPage = () => {
         >
           <Avatar sx={{ m: 2, width: 104, height: 104 }}
             variant="rounded"
-            src={image_logo}>
+            src={"/static/time.png"}>
             {/* <SportsBaseballIcon /> */}
           </Avatar>
           <Typography component="h1" variant="h4">

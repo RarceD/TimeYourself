@@ -10,7 +10,6 @@ import Container from '@mui/material/Container';
 import { useNavigate } from 'react-router';
 import { GetUserDto } from '../util/util';
 import { useEffect, useState } from 'react';
-import image_logo from './../images/time.png';
 import { PostFromServer } from '../services/server';
 import { UserDto } from '../interfaces/UserDto';
 import 'animate.css';
@@ -62,7 +61,7 @@ export const Login = () => {
         >
           <Avatar sx={{ m: 2, width: 104, height: 104 }}
             variant="rounded"
-            src={image_logo}>
+            src={"/static/time.png"}>
             {/* <SportsBaseballIcon /> */}
           </Avatar>
           <Typography component="h1" variant="h4" 
