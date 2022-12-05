@@ -1,4 +1,5 @@
-﻿using System.Globalization;
+﻿using SQLitePCL;
+using System.Globalization;
 using TimeYourselfBack.Models;
 using TimeYourselfBack.Repositories;
 using TimeYourselfBack.Repositories.Models;
@@ -31,42 +32,43 @@ public class VisualizerManagementService : IVisualizerManagementService
     }
     public List<VisualizerLayoutDto> GetCalerdar(int userId, int? configId, int year)
     {
-        List<VisualizerLayoutDto> visualizerLayoutDtos = new List<VisualizerLayoutDto>();
-        if (configId != null)
-        {
-            // Return calendar for all configs:
-            return visualizerLayoutDtos;
-        }
+        var visualizerLayoutDtos = new List<VisualizerLayoutDto>();
+
         // Return calendar only the config received
         var allMeetings = _context.Visualizer.Where(i => i.UserId == userId).ToList();
 
-        var layout = new VisualizerLayoutDto();
-        layout.Months = new List<VisualizerMonthDto>();
-        layout.Id = year;
-        
-        var calendar = new GregorianCalendar();
+        // Get data:
+        var layout = new VisualizerLayoutDto() { Id = year, Months = new List<VisualizerMonthDto>() };
         for (var m = 1; m <= 12; m++)
         {
-            var AlotOfDays = new List<VisualizerDayDto>();
-            for (var d = 1; d < calendar.GetDaysInMonth(year, m); d++)
-            {
-                VisualizerDayDto i = new() { Id = d, Person = "" };
-                foreach (var meet in allMeetings)
-                {
-                    var meetDate = Convert.ToDateTime(meet.InsertDate);
-                    if  (meetDate.Day == d && meetDate.Month == m)
-                        i.Person = meet.ConfigId.ToString();
-                }
-                AlotOfDays.Add(i);
-            }
-            layout.Months.Add(new VisualizerMonthDto()
-            {
-                Days = AlotOfDays,
-                Id = m
-            });
+            List<VisualizerDayDto> days = GetDaysForMonth(year, allMeetings, m);
+            layout.Months.Add(new VisualizerMonthDto() { Days = days, Id = m });
         }
         visualizerLayoutDtos.Add(layout);
         return visualizerLayoutDtos;
+    }
+
+    private List<VisualizerDayDto> GetDaysForMonth(int year, List<Visualizer> allMeetings, int month)
+    {
+        var days = new List<VisualizerDayDto>();
+        var calendar = new GregorianCalendar();
+        for (var d = 1; d <= calendar.GetDaysInMonth(year, month); d++)
+        {
+            VisualizerDayDto i = new() { Id = d, People = new List<string>() };
+            foreach (var meet in allMeetings)
+            {
+                var meetDate = Convert.ToDateTime(meet.InsertDate);
+                if (meetDate.Day == d && meetDate.Month == month)
+                {
+                    // Get user from db:
+                    var configDb = _context.Config.Where(i => i.Id == meet.ConfigId).FirstOrDefault();
+                    if (configDb == null) continue;
+                    i.People.Add(configDb.Name);
+                }
+            }
+            days.Add(i);
+        }
+        return days;
     }
 
     private static Visualizer GenerateNewVisualizer(int userId, int configId)

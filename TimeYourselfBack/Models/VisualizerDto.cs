@@ -14,7 +14,7 @@
     public class VisualizerDayDto
     {
         public int Id { get; set; }
-        public string Person { get; set; }
+        public List<string> People { get; set; }
     }
     public class VisualizerMonthDto
     {
@@ -23,7 +23,7 @@
     }
     public class VisualizerLayoutDto
     {
-        public int UserId { get; set; }
+        public int Id { get; set; }
         public List<VisualizerMonthDto> Months { get; set; }
     }
 
