@@ -4,7 +4,7 @@ import { VisualizerDayDto, VisualizerDto, VisualizerMonthDto } from "../interfac
 const numberToMonth = (numMonth: number): string => {
     var months = ["January", "February", "March", "April", "May", "June",
         "July", "August", "September", "October", "November", "December"];
-    return months[numMonth];
+    return months[numMonth - 1];
 }
 
 interface MonthProps {
@@ -35,8 +35,8 @@ export const MonthCalendar = (props: MonthProps) => {
                                     <>
                                         <Button
                                             key={day.id}
-                                            color={"inherit"}
-                                            variant={day.people.length > 0 ? "outlined" : "contained"}
+                                            color={day.people.length > 0 ? "error" : "inherit"}
+                                            variant={day.people.length > 0 ? "contained" : "outlined"}
                                             size="large"
                                         >
                                         </Button>
