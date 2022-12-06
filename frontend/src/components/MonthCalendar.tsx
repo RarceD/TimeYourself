@@ -36,7 +36,7 @@ export const MonthCalendar = (props: MonthProps) => {
                                         <Button
                                             key={day.id}
                                             color={"inherit"}
-                                            variant={Math.random() > 0.5 ? "outlined" : "contained"}
+                                            variant={day.people.length > 0 ? "outlined" : "contained"}
                                             size="large"
                                         >
                                         </Button>

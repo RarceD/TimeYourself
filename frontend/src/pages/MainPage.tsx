@@ -1,9 +1,5 @@
-import Avatar from '@mui/material/Avatar';
-import Button from '@mui/material/Button';
+import {Avatar, Button, Typography, Container, Box} from '@mui/material';
 import CssBaseline from '@mui/material/CssBaseline';
-import Box from '@mui/material/Box';
-import Typography from '@mui/material/Typography';
-import Container from '@mui/material/Container';
 import { useNavigate } from 'react-router';
 import { useEffect } from 'react';
 
