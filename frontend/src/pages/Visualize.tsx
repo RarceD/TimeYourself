@@ -12,35 +12,48 @@ import { MobileDatePicker } from '@mui/x-date-pickers'
 import { LocalizationProvider } from '@mui/x-date-pickers'
 import dayjs, { Dayjs } from 'dayjs';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { ConfigDto } from '../interfaces/ConfigDto';
 
 
 export const Visualize = () => {
   let [userVisualizerDataMonths, setUserVisualizerDataMonths] = useState<VisualizerDto[]>([]);
 
-  const [value, setValue] = useState<Dayjs | null>(
-    dayjs('2022-12-18T21:11:54'),
-  );
+  const [calendar, setCalendar] = useState<Dayjs | null>(dayjs('2022-12-18T21:11:54'));
   const handleChangee = (newValue: Dayjs | null) => {
-    setValue(newValue);
+    let selectedYear: number | undefined = newValue?.get("year");
+    if (selectedYear !== undefined) 
+      setYear(selectedYear);
+    setCalendar(newValue);
   };
-  const [person, setPerson] = useState('');
+
+  const [person, setPerson] = useState("");
+  const [year, setYear] = useState(new Date().getFullYear());
+  const [configOptions, setConfigOptions] = useState<ConfigDto[]>([]);
   const handleChange = (event: SelectChangeEvent) => {
     setPerson(event.target.value as string);
   };
-
 
   const onServerResponse = (json: any) => {
     let visualize: VisualizerDto[] = json;
     console.log(visualize);
     setUserVisualizerDataMonths(visualize);
   }
-
+  const onServerResponseConfig = (json: any) => {
+    let configUsers: ConfigDto[] = json;
+    setConfigOptions(configUsers);
+    if (configUsers.length > 0)
+      setPerson(configUsers[0].name)
+  }
   useEffect(() => {
     GetFromServer({
       callbackFunction: onServerResponse,
-      endpoint: 'visualizer/all?year=2022',
+      endpoint: 'visualizer/all?year=' + year,
     });
-  }, []);
+    GetFromServer({
+      callbackFunction: onServerResponseConfig,
+      endpoint: 'configuration',
+    });
+  }, [year]);
 
   return (
     <>
@@ -60,7 +73,7 @@ export const Visualize = () => {
               <MobileDatePicker
                 label="Select Year"
                 inputFormat="YYYY"
-                value={value}
+                value={calendar}
                 onChange={handleChangee}
                 renderInput={(params: any) => <TextField {...params} />}
               />
@@ -68,17 +81,16 @@ export const Visualize = () => {
           </LocalizationProvider>
 
           <Select
-            label="Select Year"
+            label="Select person"
             value={person}
             onChange={handleChange}
+            sx={{marginTop: "5%"}}
           >
-            {["test"].map((p) => <MenuItem value={p}>{p}</MenuItem>)}
+            {configOptions.length > 0 ? configOptions.map((p) => <MenuItem key={p.id + p.name} value={p.name}>{p.name}</MenuItem>) : <></>}
           </Select>
-
-
           {
             userVisualizerDataMonths.length > 0 ?
-              <MonthCalendar data={userVisualizerDataMonths[0]} /> :
+              <MonthCalendar data={userVisualizerDataMonths[0]} configUser={person} /> :
               <></>
           }
 

@@ -1,6 +1,6 @@
 import { UserDto } from "../interfaces/UserDto";
 
-export const URL_REQUEST: string = "http://localhost:5000/";
+export const URL_REQUEST: string = "http://localhost:5050/";
 
 export const GetUserDto = () : UserDto | null => {
     let user: string | null = localStorage.getItem("user")

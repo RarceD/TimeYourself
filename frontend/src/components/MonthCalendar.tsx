@@ -8,24 +8,28 @@ const numberToMonth = (numMonth: number): string => {
 }
 
 interface MonthProps {
-    data: VisualizerDto
+    data: VisualizerDto,
+    configUser: string
 }
 export const MonthCalendar = (props: MonthProps) => {
     // TODO: Improve visualization of this component
-    const { data } = props;
+    const { data, configUser } = props;
     return (
         <>
             {
                 data.months.map((month: VisualizerMonthDto) => {
                     return <>
                         <Typography component="h6" variant="h6"
+                            fontStyle={"italic"}
+                            //key={month.id + month.days[month.id].id}
                             style={{
                                 marginBottom: "20px"
                             }}>
-                            - {numberToMonth(month.id)}:
+                            {numberToMonth(month.id)}
                         </Typography>
 
                         <Grid container
+                            //key={month.id}
                             spacing={{ xs: 1 }}
                             columns={{ xs: 4 }}
                             margin="10px"
@@ -34,8 +38,8 @@ export const MonthCalendar = (props: MonthProps) => {
                                 return (
                                     <>
                                         <Button
-                                            key={day.id}
-                                            color={day.people.length > 0 ? "error" : "inherit"}
+                                            key={day.id ** month.id}
+                                            color={day.people.length > 0 && configUser === day.people[0] ? "error" : "inherit"}
                                             variant={day.people.length > 0 ? "contained" : "outlined"}
                                             size="large"
                                         >
