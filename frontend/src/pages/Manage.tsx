@@ -2,12 +2,11 @@ import CssBaseline from '@mui/material/CssBaseline';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
-import { useNavigate } from 'react-router';
 import { useEffect, useState } from 'react';
 import { TopNavBar } from '../components/TopNavBar';
-import { Alert, Button, Grid, InputLabel, MenuItem, Select, SelectChangeEvent, Stack, TextField } from '@mui/material';
-import { ConfigDto } from '../interfaces/ConfigDto';
-import { GetFromServer } from '../services/server';
+import { Alert, Button, Grid,  MenuItem, Select, SelectChangeEvent, Stack, TextField } from '@mui/material';
+import { ConfigDto, getIdFromConfigPerson } from '../interfaces/ConfigDto';
+import { GetFromServer, PostFromServer } from '../services/server';
 import { MobileDatePicker } from '@mui/x-date-pickers'
 import { LocalizationProvider } from '@mui/x-date-pickers'
 import dayjs, { Dayjs } from 'dayjs';
@@ -17,12 +16,23 @@ export const Manage = () => {
   const [meetPerson, setMeetPerson] = useState("");
   const [person, setPerson] = useState('');
   const [peopleToMeetWith, setPeopleToMeetWith] = useState<ConfigDto[]>([]);
-  const [value, setValue] = useState<Dayjs | null>(
+  const [calendar, setCalendar] = useState<Dayjs | null>(
     dayjs('2022-12-18T21:11:54'),
   );
+  const saveMeeting = () => {
+    PostFromServer({
+      callbackFunction: () => {},
+      endpoint: "manage/add",
+      data: {
+        configId: getIdFromConfigPerson(peopleToMeetWith, person),
+        insertDate: calendar !== null ? calendar.toDate() : new Date()
+      }
+    })
+
+  }
 
   const handleChangee = (newValue: Dayjs | null) => {
-    setValue(newValue);
+    setCalendar(newValue);
   };
 
 
@@ -76,7 +86,7 @@ export const Manage = () => {
                 <MobileDatePicker
                   label="Date mobile"
                   inputFormat="MM/DD/YYYY"
-                  value={value}
+                  value={calendar}
                   onChange={handleChangee}
                   renderInput={(params: any) => <TextField {...params} />}
                 />
@@ -90,11 +100,11 @@ export const Manage = () => {
           <Grid item>
             <Button
               variant="contained"
-              //onClick={() => onClose("")}
-              color="error"
+              onClick={() => saveMeeting()}
+              color="inherit"
               size="large"
             >
-              Exit
+              Save meeting
             </Button>
 
           </Grid>
@@ -102,6 +112,7 @@ export const Manage = () => {
             <Button
               variant="outlined"
               //onClick={handleClose}
+              color="secondary"
               size="large"
             >
               Delete user
