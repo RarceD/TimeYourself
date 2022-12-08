@@ -4,7 +4,7 @@ namespace TimeYourselfBack.Service
 {
     public interface IVisualizerManagementService
     {
-        bool AddVisualizerRegister(int userId, int configId);
+        List<string> GetVisualizerPeople(int userId, int? configId, DateTime dateTime);
         List<VisualizerLayoutDto> GetCalerdar(int userId, int? configId, int year);
     }
 }

@@ -28,8 +28,7 @@ public class ManageController : BaseController
     [Route("add")]
     public ActionResult AddMeeting(ManageDto manage)
     {
-        var userId = GetUserIdFromJWT();
-        bool success = _manageManagementService.AddMetting(manage, userId);
+        bool success = _manageManagementService.AddMetting(manage, GetUserIdFromJWT());
         return success ? Ok("ok") : NoContent();
     }
 
@@ -37,8 +36,7 @@ public class ManageController : BaseController
     [Route("remove")]
     public ActionResult RemoveMeeting(ManageDto manage)
     {
-        var userId = GetUserIdFromJWT();
-        bool success = _manageManagementService.RemoveMetting(manage, userId);
+        bool success = _manageManagementService.RemoveMetting(manage,  GetUserIdFromJWT());
         return success ? Ok("ok") : NoContent();
     }
     #endregion

@@ -38,8 +38,9 @@ public class ManageManagementService : IManageManagementService
     {
         try
         {
-            // TODO: Insert Data must be taken in consideration
-            IEnumerable<Visualizer> toRemove = _context.Visualizer.Where(x => x.UserId == userId && x.ConfigId == dto.ConfigId).ToList();
+            var toRemove = _context.Visualizer.Where(x => x.UserId == userId && x.ConfigId == dto.ConfigId).ToList();
+            if (toRemove.Count == 0) return false;
+
             foreach (var v in toRemove)
             {
                 if (CompareTime(v.InsertDate, dto.InsertDate))

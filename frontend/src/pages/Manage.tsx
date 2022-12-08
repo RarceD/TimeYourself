@@ -4,7 +4,7 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { useEffect, useState } from 'react';
 import { TopNavBar } from '../components/TopNavBar';
-import { Alert, Button, Grid,  MenuItem, Select, SelectChangeEvent, Stack, TextField } from '@mui/material';
+import { Alert, Button, Grid, MenuItem, Select, SelectChangeEvent, Stack, TextField } from '@mui/material';
 import { ConfigDto, getIdFromConfigPerson } from '../interfaces/ConfigDto';
 import { GetFromServer, PostFromServer } from '../services/server';
 import { MobileDatePicker } from '@mui/x-date-pickers'
@@ -13,42 +13,46 @@ import dayjs, { Dayjs } from 'dayjs';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 
 export const Manage = () => {
-  const [meetPerson, setMeetPerson] = useState("");
+  const [meetPeopleInDate, setMeetPeopleInDate] = useState<string[]>([]);
   const [person, setPerson] = useState('');
   const [peopleToMeetWith, setPeopleToMeetWith] = useState<ConfigDto[]>([]);
-  const [calendar, setCalendar] = useState<Dayjs | null>(
-    dayjs('2022-12-18T21:11:54'),
-  );
-  const saveMeeting = () => {
+  const [calendar, setCalendar] = useState<Dayjs | null>(dayjs());
+
+  const editMeeting = (add: boolean) => {
     PostFromServer({
-      callbackFunction: () => {},
-      endpoint: "manage/add",
+      callbackFunction: (resp: any) => { console.log(resp) },
+      endpoint: add ? "manage/add" : "manage/remove",
       data: {
         configId: getIdFromConfigPerson(peopleToMeetWith, person),
         insertDate: calendar !== null ? calendar.toDate() : new Date()
       }
     })
-
+  }
+  const getMeetingPeople = () => {
+    const configId = getIdFromConfigPerson(peopleToMeetWith, person);
+    let dateTime = calendar !== null ? calendar.toDate() : new Date()
+    let dateTimeStr = dateTime.getDate() + "/" + (dateTime.getMonth() + 1) + "/" + dateTime.getFullYear()
+    //debugger;
+    GetFromServer({
+      callbackFunction: (resp: any) => {
+        let d: string[] = resp; setMeetPeopleInDate(d);
+      },
+      endpoint: "visualizer?configId=" + configId + "&dateTime=" + dateTimeStr
+    })
   }
 
   const handleChangee = (newValue: Dayjs | null) => {
-    setCalendar(newValue);
+    setCalendar(newValue); getMeetingPeople();
   };
-
-
   const handleChange = (event: SelectChangeEvent) => {
-    setPerson(event.target.value as string);
+    setPerson(event.target.value as string); getMeetingPeople();
   };
-
-  useEffect(() => {
-  }, []);
 
   const onServerResponse = (json: any) => {
     let configUsers: ConfigDto[] = json;
     setPeopleToMeetWith(configUsers);
-
-    setMeetPerson("Rubén");
-    setPerson('hola');
+    if (configUsers.length > 0)
+      setPerson(configUsers[0].name)
   }
   useEffect(() => {
     GetFromServer({
@@ -68,40 +72,40 @@ export const Manage = () => {
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
-            marginBottom: '20%'
           }}
         >
           <Typography component="h6" variant="h6" marginBottom={'20px'}>
             Select the person you have meet today:
           </Typography>
           <Select
+            label="Date mobile"
             value={person}
-            label="Age"
             onChange={handleChange}
           >
             {peopleToMeetWith.map((p) => <MenuItem key={p.id} value={p.name}>{p.name}</MenuItem>)}
           </Select>
-            <LocalizationProvider dateAdapter={AdapterDayjs}>
-              <Stack spacing={3}>
-                <MobileDatePicker
-                  label="Date mobile"
-                  inputFormat="MM/DD/YYYY"
-                  value={calendar}
-                  onChange={handleChangee}
-                  renderInput={(params: any) => <TextField {...params} />}
-                />
-              </Stack>
-            </LocalizationProvider>
+          <LocalizationProvider dateAdapter={AdapterDayjs} >
+            <Stack spacing={3}
+              style={{ marginTop: '30px' }}>
+              <MobileDatePicker
+                label="Date mobile"
+                inputFormat="DD/MM/YYYY"
+                value={calendar}
+                onChange={handleChangee}
+                renderInput={(params: any) => <TextField {...params} />}
+              />
+            </Stack>
+          </LocalizationProvider>
         </Box>
 
-        <Grid container direction="row" justifyContent="center" alignItems="center" marginBottom="40px"
+        <Grid container direction="row" justifyContent="center" alignItems="center" marginBottom="10%"
           marginTop="20px"
           spacing={2}>
           <Grid item>
             <Button
               variant="contained"
-              onClick={() => saveMeeting()}
-              color="inherit"
+              onClick={() => editMeeting(true)}
+              //color=""
               size="large"
             >
               Save meeting
@@ -110,23 +114,29 @@ export const Manage = () => {
           </Grid>
           <Grid item >
             <Button
-              variant="outlined"
-              //onClick={handleClose}
-              color="secondary"
+              variant="contained"
+              onClick={() => editMeeting(false)}
+              color="error"
               size="large"
             >
-              Delete user
+              Delete meeting
             </Button>
           </Grid>
-
-          <Grid item >
-          </Grid>
         </Grid>
-        <Alert severity="success">You have add meet with {meetPerson}</Alert>
-        <Alert severity="error">You have add meet with {meetPerson}</Alert>
       </Container>
+
+      <div>
+        {
+          meetPeopleInDate.length > 0 ?
+            meetPeopleInDate.map((p) => <Alert severity="success">You have add meet with {p}</Alert>)
+            : <></>
+        }
+      </div>
 
     </>
   )
 }
 export default Manage;
+
+// TODO: Al borrar user tengo que descarlo
+// <Alert severity="error">You have add meet with {meetPerson}</Alert>

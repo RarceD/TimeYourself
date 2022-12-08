@@ -28,9 +28,9 @@ public class VisualizerController : BaseController
     /// <param name="configId"></param>
     /// <returns></returns>
     [HttpGet]
-    public IEnumerable<VisualizerLayoutDto> GetVisualizerDataSpecifig(int configId, int year)
+    public IEnumerable<string> GetVisualizerDataSpecifig(int configId, DateTime dateTime)
     {
-        return _visualizerManagementService.GetCalerdar(GetUserIdFromJWT(), configId, year);
+        return _visualizerManagementService.GetVisualizerPeople(GetUserIdFromJWT(), configId, dateTime);
     }
 
     /// <summary>
@@ -47,12 +47,5 @@ public class VisualizerController : BaseController
     #endregion
 
     #region POST
-
-    [HttpPost]
-    public ActionResult AddVisualizerRegister(VisualizerDto newVisualizer)
-    {
-        //bool success = _visualizerManagementService.AddVisualizerRegister(newVisualizer.UserId, newVisualizer.ConfigId);
-        return true ? Ok() : NoContent();
-    }
     #endregion
 }

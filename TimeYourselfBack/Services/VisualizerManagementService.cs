@@ -15,19 +15,26 @@ public class VisualizerManagementService : IVisualizerManagementService
         _context = context;
     }
 
-    public bool AddVisualizerRegister(int userId, int configId)
+    public List<string> GetVisualizerPeople(int userId, int? configId, DateTime dateTime)
     {
-        // If user and config id exist in db y add a register with this date:
-        var clientExist = _context.Clients.Where(i => i.Id == userId).FirstOrDefault();
-        if (clientExist == null) return false;
-        var configExist = _context.Config.Where(i => i.Id == configId).FirstOrDefault();
-        if (configExist == null) return false;
-
         // Add new register:
-        Visualizer newRegister = GenerateNewVisualizer(userId, configId);
-        _context.Add(newRegister);
-        _context.SaveChanges();
-        return true;
+        var peopleWhoInteract = _context.Visualizer.Where(i => i.UserId == userId);
+        List<string> meetPeopleNames = new();
+        foreach (var person in peopleWhoInteract)
+        {
+            // Apply filter in case of configId received
+            if (configId.HasValue && person.ConfigId != configId) continue;
+
+            // Check date:
+            DateTime checkDate = Convert.ToDateTime(person.InsertDate);
+            if (checkDate.Day == dateTime.Day && checkDate.Month == dateTime.Month && checkDate.Year == dateTime.Year)
+            {
+                string? name = _context.Config.Where(i=>i.Id == configId).Select(i => i.Name).FirstOrDefault();
+                if (name != null) 
+                    meetPeopleNames.Add(person.ConfigId.ToString());
+            }
+        }
+        return meetPeopleNames;
 
     }
     public List<VisualizerLayoutDto> GetCalerdar(int userId, int? configId, int year)
@@ -58,7 +65,7 @@ public class VisualizerManagementService : IVisualizerManagementService
             foreach (var meet in allMeetings)
             {
                 var meetDate = Convert.ToDateTime(meet.InsertDate);
-                if (meetDate.Day == d && meetDate.Month == month)
+                if (meetDate.Year == year && meetDate.Day == d && meetDate.Month == month)
                 {
                     // Get user from db:
                     var configDb = _context.Config.Where(i => i.Id == meet.ConfigId).FirstOrDefault();
@@ -69,14 +76,5 @@ public class VisualizerManagementService : IVisualizerManagementService
             days.Add(i);
         }
         return days;
-    }
-
-    private static Visualizer GenerateNewVisualizer(int userId, int configId)
-    {
-        Visualizer newRegister = new();
-        newRegister.ConfigId = configId;
-        newRegister.UserId = userId;
-        var today = DateTime.Today;
-        return newRegister;
     }
 }

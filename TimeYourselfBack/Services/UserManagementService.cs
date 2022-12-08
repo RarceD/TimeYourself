@@ -12,10 +12,9 @@ public class UserManagementService : IUserManagementService
     {
         _dbContext = dbContext;
     }
-
     public UserDto ValidateUser(UserDto userInput)
     {
-        // Validate in db:
+        // Validate in db only the name:
         Clients? client = _dbContext.Clients.Where(i=>i.Name == userInput.UserNumber).FirstOrDefault();
         userInput.Token = client != null ? client.Token : "";
         userInput.Id = client != null ? client.Id : 0;
