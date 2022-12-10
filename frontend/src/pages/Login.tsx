@@ -13,6 +13,7 @@ import { useEffect, useState } from 'react';
 import { PostFromServer } from '../services/server';
 import { UserDto } from '../interfaces/UserDto';
 import 'animate.css';
+import { RenderCanvasById } from '../components/DinamicLogo';
 
 export const Login = () => {
   const [user, setUser] = useState("");
@@ -36,6 +37,8 @@ export const Login = () => {
   }
 
   const handleSubmit = () => {
+    // TODO: this is just for testing, remove:
+    navigate('/mainPage');
     PostFromServer({
       callbackFunction: onServerResponse,
       endpoint: 'user',
@@ -46,14 +49,17 @@ export const Login = () => {
   }
 
   useEffect(()=>{
+    RenderCanvasById("webgl")
   });
   return (
     <>
+      <canvas id="webgl"></canvas>
+
       <Container component="main" maxWidth="xs">
         <CssBaseline />
         <Box
           sx={{
-            marginTop: "50%",
+            marginTop: "10%",
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
