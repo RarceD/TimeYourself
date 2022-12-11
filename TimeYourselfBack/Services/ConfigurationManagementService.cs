@@ -36,7 +36,7 @@ public class ConfigurationManagementService : IConfigurationManagementService
     {
         try
         {
-            var configToDelete = _context.Config.Where(i => i.UserId == config.UserId && i.Name == config.Name).FirstOrDefault();
+            var configToDelete = _context.Config.Where(i => i.UserId == config.UserId && i.Id == config.Id).FirstOrDefault();
             if (configToDelete == null) return false;
             _ = _context.Remove(configToDelete);
             _context.SaveChanges();

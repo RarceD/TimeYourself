@@ -85,7 +85,7 @@ export const Visualize = () => {
             onChange={handleChange}
             sx={{marginTop: "5%"}}
           >
-            {configOptions.length > 0 ? configOptions.map((p) => <MenuItem key={p.id + p.name} value={p.name}>{p.name}</MenuItem>) : <></>}
+            {configOptions.length > 0 ? configOptions.map((p) => <MenuItem key={p.id + p.name} value={p.name}>{p.name}</MenuItem>) : <h1>.</h1>}
           </Select>
           {
             userVisualizerDataMonths.length > 0 ?

@@ -73,7 +73,10 @@ export const Config = () => {
       >
         {
           peopleList.length !== 0 ?
-            <ConfigListPeople peopleList={peopleList} />
+            <ConfigListPeople peopleList={peopleList} 
+            refreshFunction={function (): void {
+              setRefresh(true);
+            } } />
             :
             <> No friends enable</>
         }
