@@ -13,7 +13,6 @@ import { useEffect, useState } from 'react';
 import { PostFromServer } from '../services/server';
 import { UserDto } from '../interfaces/UserDto';
 import 'animate.css';
-import { RenderCanvasById } from '../components/DinamicLogo';
 
 export const Login = () => {
   const [user, setUser] = useState("");
@@ -23,10 +22,9 @@ export const Login = () => {
 
   const onServerResponse = (json: any) => {
     let raw: UserDto = json;
-    if (raw.token === "") 
-    {
-        setErrorSubmit(true);
-        return;
+    if (raw.token === "") {
+      setErrorSubmit(true);
+      return;
     }
     // If OK:
     localStorage.setItem("user", JSON.stringify(json));
@@ -38,7 +36,6 @@ export const Login = () => {
 
   const handleSubmit = () => {
     // TODO: this is just for testing, remove:
-    navigate('/mainPage');
     PostFromServer({
       callbackFunction: onServerResponse,
       endpoint: 'user',
@@ -48,8 +45,7 @@ export const Login = () => {
     });
   }
 
-  useEffect(()=>{
-    RenderCanvasById("webgl")
+  useEffect(() => {
   });
   return (
     <>
@@ -70,7 +66,7 @@ export const Login = () => {
             src={"/static/time.png"}>
             {/* <SportsBaseballIcon /> */}
           </Avatar>
-          <Typography component="h1" variant="h4" 
+          <Typography component="h1" variant="h4"
             className='animate__animated animate__bounceIn animate__slow animate__delay-2s '
           >
             Time Yourself

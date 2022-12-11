@@ -37,7 +37,7 @@ export const Config = () => {
     // Create new user:
     PostFromServer({
       callbackFunction: (str: string) => { setRefresh(true); },
-      endpoint: 'configuration',
+      endpoint: 'configuration/add',
       data: {
         "name": value,
         "userId": user.id

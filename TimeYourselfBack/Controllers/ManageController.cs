@@ -29,7 +29,7 @@ public class ManageController : BaseController
     public ActionResult AddMeeting(ManageDto manage)
     {
         bool success = _manageManagementService.AddMetting(manage, GetUserIdFromJWT());
-        return success ? Ok("ok") : NoContent();
+        return success ? Ok("ok") : Ok("exist");
     }
 
     [HttpPost]

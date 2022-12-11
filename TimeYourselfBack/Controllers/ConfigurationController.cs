@@ -36,17 +36,18 @@ public class ConfigurationController : BaseController
     [Route("add")]
     public ActionResult AddConfiguration(ConfigDto config)
     {
+        config.UserId = GetUserIdFromJWT();
         bool success = _configurationManagementService.AddOrUpdateConfiguration(config);
-        return success ? Ok() : NoContent();
+        return success ? Ok("ok") : NoContent();
     }
 
     [HttpPost]
     [Route("remove")]
     public ActionResult RemoveConfiguration(ConfigDto config)
     {
-
+        config.UserId = GetUserIdFromJWT();
         bool success = _configurationManagementService.RemoveConfiguration(config);
-        return success ? Ok() : NoContent();
+        return success ? Ok("ok") : NoContent();
     }
     #endregion
 

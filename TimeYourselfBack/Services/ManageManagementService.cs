@@ -24,6 +24,15 @@ public class ManageManagementService : IManageManagementService
                 newEntry.InsertDate = DateTime.Now.ToString();
             else
                 newEntry.InsertDate = dto.InsertDate.ToString()!;
+
+            // Check first if there is not a register with this date and person:
+            var maybeExist = _context.Visualizer.Where(x=>x.UserId == userId && x.ConfigId == dto.ConfigId).ToList();
+            foreach (var v in maybeExist)
+            {
+                if (CompareTime(v.InsertDate, dto.InsertDate)) return false;
+            }
+            
+            // If not I add new one:
             _context.Add(newEntry);
             _context.SaveChanges();
             return true;

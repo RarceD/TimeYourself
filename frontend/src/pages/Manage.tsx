@@ -20,7 +20,7 @@ export const Manage = () => {
 
   const editMeeting = (add: boolean) => {
     PostFromServer({
-      callbackFunction: (resp: any) => { console.log(resp) },
+      callbackFunction: (resp: any) => {  getMeetingPeople(); console.log(resp) },
       endpoint: add ? "manage/add" : "manage/remove",
       data: {
         configId: getIdFromConfigPerson(peopleToMeetWith, person),
@@ -32,10 +32,12 @@ export const Manage = () => {
     const configId = getIdFromConfigPerson(peopleToMeetWith, person);
     let dateTime = calendar !== null ? calendar.toDate() : new Date()
     let dateTimeStr = dateTime.getDate() + "/" + (dateTime.getMonth() + 1) + "/" + dateTime.getFullYear()
+    console.log(dateTimeStr);
     //debugger;
     GetFromServer({
       callbackFunction: (resp: any) => {
         let d: string[] = resp; setMeetPeopleInDate(d);
+        console.log(d);
       },
       endpoint: "visualizer?configId=" + configId + "&dateTime=" + dateTimeStr
     })
@@ -53,6 +55,10 @@ export const Manage = () => {
     setPeopleToMeetWith(configUsers);
     if (configUsers.length > 0)
       setPerson(configUsers[0].name)
+
+      //setTimeout(()=> getMeetingPeople(), 1000);
+    
+
   }
   useEffect(() => {
     GetFromServer({

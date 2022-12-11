@@ -18,10 +18,9 @@ export const MonthCalendar = (props: MonthProps) => {
         <>
             {
                 data.months.map((month: VisualizerMonthDto) => {
-                    return <>
+                    return <div key={month.id + Math.random()} >
                         <Typography component="h6" variant="h6"
                             fontStyle={"italic"}
-                            //key={month.id + month.days[month.id].id}
                             style={{
                                 marginBottom: "20px"
                             }}>
@@ -36,19 +35,17 @@ export const MonthCalendar = (props: MonthProps) => {
                         >
                             {month.days.map((day: VisualizerDayDto) => {
                                 return (
-                                    <>
-                                        <Button
-                                            key={day.id ** month.id}
-                                            color={day.people.length > 0 && configUser === day.people[0] ? "error" : "inherit"}
-                                            variant={day.people.length > 0 ? "contained" : "outlined"}
-                                            size="large"
-                                        >
-                                        </Button>
-                                    </>
+                                    <Button
+                                        key={day.id * month.id + Math.random()}
+                                        color={day.people.length > 0 && configUser === day.people[0] ? "error" : "inherit"}
+                                        variant={day.people.length > 0 ? "contained" : "outlined"}
+                                        size="large"
+                                    >
+                                    </Button>
                                 );
                             })}
                         </Grid>
-                    </>;
+                    </div>;
                 }
                 )
             }

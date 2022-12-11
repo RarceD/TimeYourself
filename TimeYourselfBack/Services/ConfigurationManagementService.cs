@@ -17,8 +17,11 @@ public class ConfigurationManagementService : IConfigurationManagementService
         try
         {
             Config config = new();
-            config.UserId = newConfig.UserId;
+            config.UserId = (int)newConfig.UserId!;
             config.Name = newConfig.Name;
+            // Check two configs with same name:
+            var configToDelete = _context.Config.Where(i => i.UserId == config.UserId && i.Name == config.Name).FirstOrDefault();
+            if (configToDelete != null) return false;
             _context.Add(config);
             _context.SaveChanges();
             return true;
@@ -34,6 +37,7 @@ public class ConfigurationManagementService : IConfigurationManagementService
         try
         {
             var configToDelete = _context.Config.Where(i => i.UserId == config.UserId && i.Name == config.Name).FirstOrDefault();
+            if (configToDelete == null) return false;
             _ = _context.Remove(configToDelete);
             _context.SaveChanges();
             return true;
