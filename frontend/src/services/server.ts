@@ -23,6 +23,27 @@ export const PostFromServer = (input: ServerAction) => {
       });
     return true;
   }
+  else {
+    console.log("no user token");
+  }
+}
+export const PostFromServerLogin = (input: ServerAction) => {
+  const requestOptions = {
+    method: 'POST',
+    mode: "cors" as RequestMode,
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(input.data)
+  };
+  fetch(URL_REQUEST + input.endpoint, requestOptions)
+    .then(response => response.json())
+    .catch(error => console.error('Error:', error))
+    .then(response => {
+      input.callbackFunction(response);
+    });
+  return true;
 }
 
 export const GetFromServer = (input: ServerAction) => {
@@ -43,6 +64,10 @@ export const GetFromServer = (input: ServerAction) => {
         console.log("No records found")
     }
   }
+  else {
+    console.log("no user token");
+  }
+
 }
 export const GetFromServer2 = (input: ServerAction) => {
   //const myHeaders = new Headers();

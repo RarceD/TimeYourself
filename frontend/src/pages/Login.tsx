@@ -10,7 +10,7 @@ import Container from '@mui/material/Container';
 import { useNavigate } from 'react-router';
 import { GetUserDto } from '../util/util';
 import { useEffect, useState } from 'react';
-import { PostFromServer } from '../services/server';
+import { PostFromServerLogin } from '../services/server';
 import { UserDto } from '../interfaces/UserDto';
 import 'animate.css';
 
@@ -36,7 +36,7 @@ export const Login = () => {
 
   const handleSubmit = () => {
     // TODO: this is just for testing, remove:
-    PostFromServer({
+    PostFromServerLogin({
       callbackFunction: onServerResponse,
       endpoint: 'user',
       data: {
