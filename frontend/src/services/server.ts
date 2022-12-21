@@ -32,6 +32,7 @@ export const PostFromServerLogin = (input: ServerAction) => {
     method: 'POST',
     mode: "cors" as RequestMode,
     headers: {
+      'Access-Control-Allow-Origin': '*',
       'Accept': 'application/json',
       'Content-Type': 'application/json',
     },
@@ -54,6 +55,9 @@ export const GetFromServer = (input: ServerAction) => {
     const xhr = new XMLHttpRequest()
     xhr.open("GET", URL_REQUEST + input.endpoint);
     xhr.setRequestHeader('Authorization', 'Bearer ' + token);
+    xhr.setRequestHeader('Access-Control-Allow-Origin', '*');
+    xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+    xhr.setRequestHeader('Content-type', 'application/json')
     xhr.send()
     xhr.onload = function () {
       if (xhr.status === 200) {

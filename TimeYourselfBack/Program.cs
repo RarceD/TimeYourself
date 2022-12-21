@@ -30,7 +30,13 @@ namespace TimeYourselfBack
 
             builder.Services.AddCors(opciones =>
             {
-                opciones.AddPolicy("PermitirTodo", acceso => acceso.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin());
+                opciones.AddPolicy("PermitirTodo", acceso => acceso.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin()
+                .WithMethods(
+                        HttpMethod.Get.Method,
+                        HttpMethod.Put.Method,
+                        HttpMethod.Post.Method,
+                        HttpMethod.Delete.Method)
+                );
             });
             builder.Services.AddControllers();
             builder.Services.AddEndpointsApiExplorer();
