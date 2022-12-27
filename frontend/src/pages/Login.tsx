@@ -16,7 +16,6 @@ import 'animate.css';
 
 export const Login = () => {
   const [user, setUser] = useState("");
-  const [refresh, setRefresh] = useState(true);
   const [errorSubmit, setErrorSubmit] = useState(false);
   const navigate = useNavigate();
 

@@ -2,9 +2,9 @@ import CssBaseline from '@mui/material/CssBaseline';
 import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
 import { TopNavBar } from '../components/TopNavBar';
-import { Button, ButtonGroup, Grid, MenuItem, Select, SelectChangeEvent, Stack, TextField } from '@mui/material';
+import { MenuItem, Select, SelectChangeEvent, Stack, TextField } from '@mui/material';
 import { useState, useEffect } from 'react';
-import { VisualizerDayDto, VisualizerDto, VisualizerMonthDto } from '../interfaces/VisualizerDto';
+import { VisualizerDto } from '../interfaces/VisualizerDto';
 import { GetFromServer } from '../services/server';
 import { MonthCalendar } from '../components/MonthCalendar';
 import { MobileDatePicker } from '@mui/x-date-pickers'
