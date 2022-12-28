@@ -29,7 +29,7 @@ public class VisualizerManagementService : IVisualizerManagementService
             DateTime checkDate = Convert.ToDateTime(person.InsertDate);
             if (checkDate.Day == dateTime.Day && checkDate.Month == dateTime.Month && checkDate.Year == dateTime.Year)
             {
-                string? name = _context.Config.Where(i=>i.Id == person.ConfigId).Select(i => i.Name).FirstOrDefault();
+                string? name = _context.Config.Where(i => i.Id == person.ConfigId).Select(i => i.Name).FirstOrDefault();
                 if (name == null) continue;
                 meetPeopleNames.Add(name);
             }

@@ -31,7 +31,8 @@ export const Manage = () => {
   const getMeetingPeople = () => {
     const configId = getIdFromConfigPerson(peopleToMeetWith, person);
     let dateTime = calendar !== null ? calendar.toDate() : new Date()
-    let dateTimeStr = dateTime.getDate() + "/" + (dateTime.getMonth() + 1) + "/" + dateTime.getFullYear()
+    //let dateTimeStr = dateTime.getDate() + "/" + (dateTime.getMonth() + 1) + "/" + dateTime.getFullYear()
+    let dateTimeStr = Math.round(dateTime.getTime()/1000)
     console.log(dateTimeStr);
     //debugger;
     GetFromServer({
@@ -39,7 +40,7 @@ export const Manage = () => {
         let d: string[] = resp; setMeetPeopleInDate(d);
         console.log(d);
       },
-      endpoint: "visualizer?configId=" + configId + "&dateTime=" + dateTimeStr
+      endpoint: "visualizer?configId=" + configId + "&timestamp=" + dateTimeStr
     })
   }
 

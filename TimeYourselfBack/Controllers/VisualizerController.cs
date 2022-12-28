@@ -28,8 +28,9 @@ public class VisualizerController : BaseController
     /// <param name="configId"></param>
     /// <returns></returns>
     [HttpGet]
-    public IEnumerable<string> GetVisualizerDataSpecifig(int configId, DateTime dateTime)
+    public IEnumerable<string> GetVisualizerDataSpecifig(int configId, int timestamp)
     {
+        DateTime dateTime = DateTimeOffset.FromUnixTimeSeconds(timestamp).DateTime;
         return _visualizerManagementService.GetVisualizerPeople(GetUserIdFromJWT(), configId, dateTime);
     }
 
