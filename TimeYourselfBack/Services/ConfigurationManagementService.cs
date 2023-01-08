@@ -38,6 +38,11 @@ public class ConfigurationManagementService : IConfigurationManagementService
         {
             var configToDelete = _context.Config.Where(i => i.UserId == config.UserId && i.Id == config.Id).FirstOrDefault();
             if (configToDelete == null) return false;
+            // Delete first all the Visualizer info from this user:
+            var allMeetingsFromThisConfig = _context.Visualizer.Where(i => i.ConfigId == config.Id).ToList();
+            foreach(var meetToDel in allMeetingsFromThisConfig)
+                _ = _context.Remove(meetToDel);
+            _context.SaveChanges();
             _ = _context.Remove(configToDelete);
             _context.SaveChanges();
             return true;
