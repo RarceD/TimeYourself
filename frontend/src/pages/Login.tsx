@@ -49,7 +49,7 @@ export const Login = () => {
   });
   return (
     <>
-      <Container component="main" maxWidth="xs" style={{marginTop: "50%"}}>
+      <Container component="main" maxWidth="xs" sx={{marginTop: "50%"}}>
         <CssBaseline />
         <Box
           sx={{
