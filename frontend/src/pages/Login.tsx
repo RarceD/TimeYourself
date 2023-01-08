@@ -9,10 +9,11 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { useNavigate } from 'react-router';
 import { GetUserDto } from '../util/util';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { PostFromServerLogin } from '../services/server';
 import { UserDto } from '../interfaces/UserDto';
 import 'animate.css';
+import './pagesStyles.css';
 
 export const Login = () => {
   const [user, setUser] = useState("");
@@ -48,9 +49,7 @@ export const Login = () => {
   });
   return (
     <>
-      <canvas id="webgl"></canvas>
-
-      <Container component="main" maxWidth="xs">
+      <Container component="main" maxWidth="xs" style={{marginTop: "50%"}}>
         <CssBaseline />
         <Box
           sx={{

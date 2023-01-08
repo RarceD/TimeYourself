@@ -20,7 +20,7 @@ export const Manage = () => {
 
   const editMeeting = (add: boolean) => {
     PostFromServer({
-      callbackFunction: (resp: any) => {  getMeetingPeople(); console.log(resp) },
+      callbackFunction: (resp: any) => { getMeetingPeople(); },
       endpoint: add ? "manage/add" : "manage/remove",
       data: {
         configId: getIdFromConfigPerson(peopleToMeetWith, person),
@@ -31,24 +31,26 @@ export const Manage = () => {
   const getMeetingPeople = () => {
     const configId = getIdFromConfigPerson(peopleToMeetWith, person);
     let dateTime = calendar !== null ? calendar.toDate() : new Date()
-    //let dateTimeStr = dateTime.getDate() + "/" + (dateTime.getMonth() + 1) + "/" + dateTime.getFullYear()
-    let dateTimeStr = Math.round(dateTime.getTime()/1000)
-    console.log(dateTimeStr);
-    //debugger;
+    let dateTimeStr = Math.round(dateTime.getTime() / 1000)
+    console.log(dateTimeStr, dateTime, configId);
     GetFromServer({
       callbackFunction: (resp: any) => {
-        let d: string[] = resp; setMeetPeopleInDate(d);
+        let d: string[] = resp;
+        setMeetPeopleInDate(d);
         console.log(d);
       },
       endpoint: "visualizer?configId=" + configId + "&timestamp=" + dateTimeStr
     })
   }
+  useEffect(() => {
+    getMeetingPeople();
+  }, [calendar, person])
 
-  const handleChangee = (newValue: Dayjs | null) => {
-    setCalendar(newValue); getMeetingPeople();
+  const handleCalendarChange = (newValue: Dayjs | null) => {
+    setCalendar(newValue);
   };
-  const handleChange = (event: SelectChangeEvent) => {
-    setPerson(event.target.value as string); getMeetingPeople();
+  const handlePersonChange = (event: SelectChangeEvent) => {
+    setPerson(event.target.value as string);
   };
 
   const onServerResponse = (json: any) => {
@@ -56,10 +58,7 @@ export const Manage = () => {
     setPeopleToMeetWith(configUsers);
     if (configUsers.length > 0)
       setPerson(configUsers[0].name)
-
-      //setTimeout(()=> getMeetingPeople(), 1000);
-    
-
+    setTimeout(() => getMeetingPeople(), 500);
   }
   useEffect(() => {
     GetFromServer({
@@ -71,7 +70,7 @@ export const Manage = () => {
   return (
     <>
       <TopNavBar pageName={'Manage Time'} />
-      <Container component="main" maxWidth="xs">
+      <Container component="main" maxWidth="xs" style={{ marginTop: "30%" }}>
         <CssBaseline />
         <Box
           sx={{
@@ -87,9 +86,9 @@ export const Manage = () => {
           <Select
             label="Date mobile"
             value={person}
-            onChange={handleChange}
+            onChange={handlePersonChange}
           >
-            {peopleToMeetWith.map((p) => <MenuItem key={p.id} value={p.name}>{p.name}</MenuItem>)}
+            {peopleToMeetWith.map((p, index) => <MenuItem key={index + p.id} value={p.name}>{p.name}</MenuItem>)}
           </Select>
           <LocalizationProvider dateAdapter={AdapterDayjs} >
             <Stack spacing={3}
@@ -97,8 +96,10 @@ export const Manage = () => {
               <MobileDatePicker
                 label="Date mobile"
                 inputFormat="DD/MM/YYYY"
+                closeOnSelect={true}
                 value={calendar}
-                onChange={handleChangee}
+                disableFuture={true}
+                onChange={handleCalendarChange}
                 renderInput={(params: any) => <TextField {...params} />}
               />
             </Stack>
@@ -112,7 +113,6 @@ export const Manage = () => {
             <Button
               variant="contained"
               onClick={() => editMeeting(true)}
-              //color=""
               size="large"
             >
               Save meeting
@@ -135,7 +135,7 @@ export const Manage = () => {
       <div>
         {
           meetPeopleInDate.length > 0 ?
-            meetPeopleInDate.map((p) => <Alert severity="success">You have add meet with {p}</Alert>)
+            meetPeopleInDate.map((p, index) => <Alert key={index} severity="success">You have add meet with {p}</Alert>)
             : <></>
         }
       </div>
