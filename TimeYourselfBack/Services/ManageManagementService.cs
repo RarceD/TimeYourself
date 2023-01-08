@@ -17,9 +17,11 @@ public class ManageManagementService : IManageManagementService
     {
         try
         {
-            Visualizer newEntry = new();
-            newEntry.UserId = userId;
-            newEntry.ConfigId = dto.ConfigId;
+            Visualizer newEntry = new()
+            {
+                UserId = userId,
+                ConfigId = dto.ConfigId
+            };
             if (dto.InsertDate == null)
                 newEntry.InsertDate = DateTime.Now.ToString();
             else
@@ -37,7 +39,7 @@ public class ManageManagementService : IManageManagementService
             _context.SaveChanges();
             return true;
         }
-        catch (Exception ex)
+        catch (Exception)
         {
             return false;
         }
@@ -61,13 +63,13 @@ public class ManageManagementService : IManageManagementService
             }
             return false;
         }
-        catch (Exception ex)
+        catch (Exception)
         {
             return false;
         }
 
     }
-    private bool CompareTime(string strDate, DateTime? userDate)
+    private static bool CompareTime(string strDate, DateTime? userDate)
     {
         DateTime dbDate = DateTime.Parse(strDate);
         if (userDate != null)

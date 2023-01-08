@@ -64,7 +64,7 @@ public class VisualizerManagementService : IVisualizerManagementService
             VisualizerDayDto i = new() { Id = d, People = new List<string>() };
             foreach (var meet in allMeetings)
             {
-                var meetDate = Convert.ToDateTime(meet.InsertDate);
+                var meetDate = DateTime.Parse(meet.InsertDate);
                 if (meetDate.Year == year && meetDate.Day == d && meetDate.Month == month)
                 {
                     // Get user from db:

@@ -26,7 +26,7 @@ public class ConfigurationManagementService : IConfigurationManagementService
             _context.SaveChanges();
             return true;
         }
-        catch (Exception ex)
+        catch (Exception)
         {
             return true;
         }
@@ -47,7 +47,7 @@ public class ConfigurationManagementService : IConfigurationManagementService
             _context.SaveChanges();
             return true;
         }
-        catch (Exception ex)
+        catch (Exception)
         {
             return true;
         }
